@@ -8,7 +8,8 @@ const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 //Define schemas
 const searchResultSchema = z.object({
   id: z.number(),
-  title: z.string(),
+  title: z.string().optional(),
+  name: z.string().optional(),
   release_date: z.string().nullable().optional(),
   first_air_date: z.string().nullable().optional(),
   media_type: z.enum(['movie', 'tv']),
