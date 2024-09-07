@@ -7,6 +7,11 @@ export default {
       fontFamily: {
         mono: ['"Roboto Mono"', 'monospace'],
       },
+      colors: {
+        text: '#E2E6E8',
+        content: '#151515',
+        accent: '#8FFF00',
+      },
     },
   },
   plugins: [],
