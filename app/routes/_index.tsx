@@ -36,20 +36,16 @@ export default function Index() {
   };
 
   return (
-    <div className="font-sans p-4 max-w-4xl mx-auto">
-      <div className="font-mono">This text will be in Roboto Mono</div>
-      <h1 className="text-3xl font-bold mb-6 text-center">RecMe</h1>
-      <p className="text-center mb-8">
-        Enter a movie or TV show you like, and we&apos;ll recommend similar
-        ones!
-      </p>
+    <main className="px-6 pt-12 flex flex-col bg-content text-text min-h-screen font-mono">
+      <h1 className="mx-auto text-center text-3xl pb-4">Give me recs for...</h1>
 
       <Search onItemSelect={handleItemSelect} />
 
       {selectedItem && (
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">
-            Recommendations based on: {selectedItem.title}
+        <div className="mt-20">
+          <h2 className="text-2xl mb-4 mx-auto text-center">
+            Best recs for people that like{' '}
+            <span className="text-accent">{selectedItem.title}</span>
           </h2>
           <Recommendations
             recommendations={recommendations}
@@ -58,6 +54,6 @@ export default function Index() {
           />
         </div>
       )}
-    </div>
+    </main>
   );
 }
