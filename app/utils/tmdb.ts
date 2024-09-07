@@ -1,9 +1,9 @@
-import axios from "axios";
-import { z } from "zod";
+import axios from 'axios';
+import { z } from 'zod';
 
 //Define variables from .env
 const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-const TMDB_BASE_URL = "https://api.themoviedb.org/3";
+const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 
 //Define schema for search results
 const searchResultSchema = z.object({
@@ -11,7 +11,7 @@ const searchResultSchema = z.object({
   title: z.string(),
   release_date: z.string().nullable().optional(),
   first_air_date: z.string().nullable().optional(),
-  media_type: z.enum(["movie", "tv"]),
+  media_type: z.enum(['movie', 'tv']),
   poster_path: z.string().nullable(),
 });
 
@@ -23,7 +23,7 @@ export async function searchTMDb(q: string): Promise<SearchResult[]> {
       params: {
         api_key: TMDB_API_KEY,
         query: q,
-        language: "en-US",
+        language: 'en-US',
         page: 1,
         include_adult: false,
       },
@@ -31,7 +31,7 @@ export async function searchTMDb(q: string): Promise<SearchResult[]> {
 
     const res = resp.data.results
       .filter(
-        (item: any) => item.media_type === "movie" || item.media_type === "tv"
+        (item: any) => item.media_type === 'movie' || item.media_type === 'tv'
       )
       .map((item: any) => {
         try {
@@ -41,7 +41,7 @@ export async function searchTMDb(q: string): Promise<SearchResult[]> {
             release_date: item.release_date || item.first_air_date,
           });
         } catch (error) {
-          console.error("Failed to parse item:", item, error);
+          console.error('Failed to parse item:', item, error);
           return null;
         }
       })
@@ -51,14 +51,14 @@ export async function searchTMDb(q: string): Promise<SearchResult[]> {
 
     return res;
   } catch (error) {
-    console.error("Error fetching search results from TMDb:", error);
+    console.error('Error fetching search results from TMDb:', error);
     return [];
   }
 }
 
 export async function getRecommendations(
   id: number,
-  mediaType: "movie" | "tv"
+  mediaType: 'movie' | 'tv'
 ): Promise<SearchResult[]> {
   try {
     const resp = await axios.get(
@@ -66,7 +66,7 @@ export async function getRecommendations(
       {
         params: {
           api_key: TMDB_API_KEY,
-          language: "en-US",
+          language: 'en-US',
           page: 1,
         },
       }
@@ -85,7 +85,7 @@ export async function getRecommendations(
             media_type: mediaType,
           });
         } catch (error) {
-          console.error("Failed to parse recommendation item:", item, error);
+          console.error('Failed to parse recommendation item:', item, error);
           return null;
         }
       })
@@ -95,7 +95,7 @@ export async function getRecommendations(
 
     return res;
   } catch (error) {
-    console.error("Error fetching recommendations from TMDb:", error);
+    console.error('Error fetching recommendations from TMDb:', error);
     return [];
   }
 }
