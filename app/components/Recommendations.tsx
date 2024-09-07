@@ -1,3 +1,4 @@
+import { Link } from '@remix-run/react';
 import { SearchResult } from '~/utils/tmdb';
 
 interface RecommendationsProps {
@@ -26,7 +27,11 @@ const Recommendations = ({
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-10 mt-8 max-w-7xl mx-auto">
       {recommendations.map((item) => (
-        <div key={item.id} className="overflow-hidden flex flex-col">
+        <Link
+          key={item.id}
+          to={`/${item.media_type}s/${item.id}`}
+          className="overflow-hidden flex flex-col"
+        >
           {item.poster_path && (
             <div className="aspect-w-2 aspect-h-3">
               <img
@@ -47,7 +52,7 @@ const Recommendations = ({
               </p>
             </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );
