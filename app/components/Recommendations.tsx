@@ -26,9 +26,9 @@ const Recommendations = ({
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-10 mt-8 max-w-7xl mx-auto">
       {recommendations.map((item) => (
-        <div key={item.id} className="overflow-hidden">
+        <div key={item.id} className="overflow-hidden flex flex-col">
           {item.poster_path && (
-            <div className=" aspect-w-2 aspect-h-3">
+            <div className="aspect-w-2 aspect-h-3">
               <img
                 src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
                 alt={item.title}
@@ -36,9 +36,9 @@ const Recommendations = ({
               />
             </div>
           )}
-          <div className="pt-2">
-            <h3 className="text-lg mb-2">{item.title}</h3>
-            <div className="flex justify-between">
+          <div className="flex flex-col flex-grow pt-2">
+            <h3 className="text-lg mb-2 flex-grow">{item.title}</h3>
+            <div className="flex justify-between mt-auto">
               <p className="text-sm text-gray-500">
                 {item.media_type === 'movie' ? 'Movie' : 'TV Show'}
               </p>
