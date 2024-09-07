@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import type { MetaFunction } from '@remix-run/node';
+import { useLoaderData, useNavigate } from '@remix-run/react';
+import { LoaderFunction, json } from '@remix-run/node';
+import { getRecommendations, SearchResult, searchTMDb } from '~/utils/tmdb';
 import Search from '~/components/Search';
 import Recommendations from '~/components/Recommendations';
-import { SearchResult, getRecommendations } from '~/utils/tmdb';
+import type { MetaFunction } from '@remix-run/node';
 
 export const meta: MetaFunction = () => {
   return [
@@ -14,25 +16,44 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export default function Index() {
-  const [selectedItem, setSelectedItem] = useState<SearchResult | null>(null);
-  const [recommendations, setRecommendations] = useState<SearchResult[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
+  const recommendationId = url.searchParams.get('recsFor');
+  const mediaType = url.searchParams.get('media') as 'movie' | 'tv';
+  const searchQuery = url.searchParams.get('q');
 
-  const handleItemSelect = async (item: SearchResult) => {
-    setSelectedItem(item);
-    setIsLoading(true);
-    setError(null);
+  let recommendations: SearchResult[] = [];
+  let searchResults: SearchResult[] = [];
+  let error: string | null = null;
 
+  if (searchQuery) {
     try {
-      const recs = await getRecommendations(item.id, item.media_type);
-      setRecommendations(recs);
+      searchResults = await searchTMDb(searchQuery);
     } catch (err) {
-      setError('Failed to fetch recommendations. Please try again.');
-    } finally {
-      setIsLoading(false);
+      error = 'Failed to fetch search results. Please try again.';
     }
+  } else if (recommendationId && mediaType) {
+    try {
+      recommendations = await getRecommendations(
+        parseInt(recommendationId, 10),
+        mediaType
+      );
+    } catch (err) {
+      error = 'Failed to fetch recommendations. Please try again.';
+    }
+  }
+
+  return json({ recommendations, searchResults, error });
+};
+
+export default function Index() {
+  const { recommendations, error } = useLoaderData<typeof loader>();
+  const [selectedItem, setSelectedItem] = useState<SearchResult | null>(null);
+  const navigate = useNavigate();
+
+  const handleItemSelect = (item: SearchResult) => {
+    setSelectedItem(item);
+    navigate(`/?recsFor=${item.id}&media=${item.media_type}`);
   };
 
   return (
@@ -49,7 +70,7 @@ export default function Index() {
           </h2>
           <Recommendations
             recommendations={recommendations}
-            isLoading={isLoading}
+            isLoading={false}
             error={error}
           />
         </div>
