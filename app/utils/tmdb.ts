@@ -2,14 +2,15 @@ import axios from "axios";
 import { z } from "zod";
 
 //Define variables from .env
-const TMDB_API_KEY = process.env.TMDB_API_KEY;
+const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 
 //Define schema for search results
 const searchResultSchema = z.object({
   id: z.number(),
   title: z.string(),
-  release_date: z.string().nullable(),
+  release_date: z.string().nullable().optional(),
+  first_air_date: z.string().nullable().optional(),
   media_type: z.enum(["movie", "tv"]),
   poster_path: z.string().nullable(),
 });
@@ -29,11 +30,15 @@ export async function searchTMDb(q: string): Promise<SearchResult[]> {
     });
 
     const res = resp.data.results
+      .filter(
+        (item: any) => item.media_type === "movie" || item.media_type === "tv"
+      )
       .map((item: any) => {
         try {
           return searchResultSchema.parse({
             ...item,
             title: item.title || item.name,
+            release_date: item.release_date || item.first_air_date,
           });
         } catch (error) {
           console.error("Failed to parse item:", item, error);
@@ -47,7 +52,7 @@ export async function searchTMDb(q: string): Promise<SearchResult[]> {
     return res;
   } catch (error) {
     console.error("Error fetching search results from TMDb:", error);
-    throw new Error("Failed to fetch search results from TMDb");
+    return [];
   }
 }
 
@@ -67,12 +72,16 @@ export async function getRecommendations(
       }
     );
 
+    const documentaryGenreId = 99;
+
     const res = resp.data.results
+      .filter((item: any) => !item.genre_ids.includes(documentaryGenreId))
       .map((item: any) => {
         try {
           return searchResultSchema.parse({
             ...item,
             title: item.title || item.name,
+            release_date: item.release_date || item.first_air_date,
             media_type: mediaType,
           });
         } catch (error) {
@@ -87,6 +96,6 @@ export async function getRecommendations(
     return res;
   } catch (error) {
     console.error("Error fetching recommendations from TMDb:", error);
-    throw new Error("Failed to fetch recommendations from TMDb");
+    return [];
   }
 }
