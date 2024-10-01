@@ -9,14 +9,15 @@ interface SearchProps {
 
 const Search = ({ onItemSelect }: SearchProps) => {
   const [query, setQuery] = useState("");
-  const [debouncedQ] = useDebounce(query, 500);
+  const debouncedQ = useDebounce(query, 500);
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchResults = async () => {
-      if (debouncedQ.length < 2) {
+      // Add a null check for debouncedQ
+      if (!debouncedQ || debouncedQ.length < 2) {
         setResults([]);
         return;
       }
@@ -27,6 +28,11 @@ const Search = ({ onItemSelect }: SearchProps) => {
       try {
         const tmdbResults = await searchTMDb(debouncedQ);
 
+        if (!Array.isArray(tmdbResults) || tmdbResults.length === 0) {
+          setResults([]);
+          return;
+        }
+
         const fuse = new Fuse(tmdbResults, {
           keys: ["title", "name"],
           threshold: 0.4,
@@ -34,11 +40,13 @@ const Search = ({ onItemSelect }: SearchProps) => {
 
         const fuzzyResults = fuse
           .search(debouncedQ)
-          .map((result: any) => result.item);
+          .map((result) => result.item);
 
         setResults(fuzzyResults);
       } catch (err) {
+        console.error("Error in fetchResults:", err);
         setError("An error occurred while fetching results. Please try again.");
+        setResults([]);
       } finally {
         setLoading(false);
       }
