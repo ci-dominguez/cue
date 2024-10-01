@@ -3,7 +3,11 @@ import useDebounce from "../hooks/useDebounce";
 import Fuse from "fuse.js";
 import { SearchResult, searchTMDb } from "~/utils/tmdb";
 
-const Search = () => {
+interface SearchProps {
+  onItemSelect: (item: SearchResult) => void;
+}
+
+const Search = ({ onItemSelect }: SearchProps) => {
   const [query, setQuery] = useState("");
   const [debouncedQ] = useDebounce(query, 500);
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -60,6 +64,7 @@ const Search = () => {
             <li
               key={result.id}
               className='px-4 py-2 hover:bg-gray-100 cursor-pointer'
+              onClick={() => onItemSelect(result)}
             >
               {result.title}{" "}
               {result.release_date &&
