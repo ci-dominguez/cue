@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getActorImageUrl } from '~/utils/tmdb';
-import Pfp from '../../public/imgs/profile.svg';
+import Pfp from '../../imgs/profile.svg';
 
 const ActorImage = ({
   profilePath,
@@ -19,7 +19,7 @@ const ActorImage = ({
     <img
       src={imageUrl}
       alt={name}
-      className="w-12 h-12 rounded-full object-cover"
+      className='w-12 h-12 rounded-full object-cover'
     />
   );
 };
