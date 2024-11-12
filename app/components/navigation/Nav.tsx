@@ -1,8 +1,7 @@
 import { useNav } from '~/contexts/NavContext';
 import { Link, useLocation } from '@remix-run/react';
 import Logo from '../../../imgs/logo.svg';
-import Menu from '../../../imgs/menu.svg';
-import X from '../../../imgs/x.svg';
+import { X, Menu } from 'lucide-react';
 
 const links = [
   {
@@ -28,7 +27,7 @@ const Nav = () => {
   const route = useLocation();
 
   return (
-    <nav className='px-6 py-2.5 flex flex-col bg-content'>
+    <nav className='px-6 py-4 flex flex-col bg-content'>
       <div className='w-full flex items-center justify-between'>
         <Link
           to='/'
@@ -39,11 +38,7 @@ const Nav = () => {
           <h1 className='font-inter font-bold text-xl'>Cue</h1>
         </Link>
         <button onClick={() => setExtended(!extended)}>
-          {extended ? (
-            <img src={X} alt='Close Menu' />
-          ) : (
-            <img src={Menu} alt='Open Menu' />
-          )}
+          {extended ? <X className='size-6' /> : <Menu className='size-6' />}
         </button>
       </div>
 
@@ -54,7 +49,11 @@ const Nav = () => {
             return (
               <li
                 key={i.title}
-                className='flex items-center border-b-[1px] border-text-1 border-opacity-20 py-2 space-x-1.5'
+                className={`flex items-center justify-between border-b-2 border-text-1 py-2 space-x-1.5 ${
+                  route.pathname === i.href
+                    ? ' border-opacity-100'
+                    : ' border-opacity-20'
+                }`}
               >
                 <Link
                   to={i.href}
@@ -66,7 +65,7 @@ const Nav = () => {
                   {i.title}
                 </Link>
                 {route.pathname === i.href && (
-                  <div className='size-1.5 rounded-full bg-text' />
+                  <div className='size-1 rounded-full bg-text' />
                 )}
               </li>
             );
