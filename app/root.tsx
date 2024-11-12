@@ -7,7 +7,7 @@ import {
 } from '@remix-run/react';
 import './tailwind.css';
 import Nav from './components/navigation/Nav';
-import Footer from './components/Footer';
+import Footer from './components/navigation/Footer';
 import { NavProvider } from './contexts/NavContext';
 
 export function Layout({ children }: { children: React.ReactNode }) {
