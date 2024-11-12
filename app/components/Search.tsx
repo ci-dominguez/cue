@@ -8,6 +8,7 @@ import {
 import useDebounce from '../hooks/useDebounce';
 import Fuse from 'fuse.js';
 import { SearchResult } from '~/utils/tmdb';
+import Input from '~/components/ui/Input';
 
 interface SearchProps {
   onItemSelect: (item: SearchResult) => void;
@@ -37,24 +38,23 @@ const Search = ({ onItemSelect }: SearchProps) => {
       : [];
 
   return (
-    <div className="flex flex-col w-full max-w-md mx-auto relative">
-      <Form method="get" className="w-full">
-        <input
-          type="text"
-          name="q"
-          id="q"
+    <div className='flex flex-col w-full max-w-md mx-auto relative'>
+      <Form method='get' className='w-full'>
+        <Input
+          name='q'
+          id='q'
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full text-3xl border-b-2 border-text border-opacity-10 focus:border-opacity-25 focus:outline-none bg-content text-accent pb-1"
+          placeholder='Enter your favorite show or movie'
         />
       </Form>
       {fuzzyResults.length > 0 && (
-        <div className="absolute z-20 w-full mt-14 overflow-hidden border-b-2 border-text border-opacity-10 pb-6 bg-content">
-          <div className="max-h-60 overflow-y-auto space-y-2 bg-content">
+        <div className='absolute z-20 w-full mt-14 overflow-hidden border-b-2 border-text border-opacity-10 pb-6 bg-content'>
+          <div className='max-h-60 overflow-y-auto space-y-2 bg-content'>
             {fuzzyResults.map((result) => (
               <button
                 key={result.id}
-                className="px-4 py-2 cursor-pointer w-full text-left border-2 border-text border-opacity-10"
+                className='px-4 py-2 cursor-pointer w-full text-left border-2 border-text border-opacity-10'
                 onClick={() => {
                   onItemSelect(result);
                   setQuery('');
