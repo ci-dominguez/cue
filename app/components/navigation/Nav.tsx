@@ -2,25 +2,7 @@ import { useNav } from '~/contexts/NavContext';
 import { Link, useLocation } from '@remix-run/react';
 import Logo from '../../../imgs/logo.svg';
 import { X, Menu } from 'lucide-react';
-
-const links = [
-  {
-    title: 'Search',
-    href: '/search',
-  },
-  {
-    title: 'Favorites',
-    href: '/favorites',
-  },
-  {
-    title: 'Recently Viewed',
-    href: '/recently-viewed',
-  },
-  {
-    title: 'About',
-    href: '/about',
-  },
-];
+import { links } from '~/utils/links';
 
 const Nav = () => {
   const { extended, setExtended } = useNav();
