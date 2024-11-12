@@ -28,7 +28,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <NavProvider>
           <Nav />
-          <main className='flex flex-col p-6 min-h-screen bg-content text-text font-inter'>
+          <main className='flex flex-col py-6 min-h-screen bg-content text-text font-inter'>
             {children}
           </main>
           <Footer />
