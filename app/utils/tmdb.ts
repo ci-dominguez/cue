@@ -14,6 +14,7 @@ const searchResultSchema = z.object({
   first_air_date: z.string().nullable().optional(),
   media_type: z.enum(['movie', 'tv']),
   poster_path: z.string().nullable(),
+  vote_average: z.number(),
 });
 
 export type SearchResult = z.infer<typeof searchResultSchema>;
@@ -26,6 +27,7 @@ const movieDetailsSchema = z.object({
   runtime: z.number(),
   genres: z.array(z.object({ id: z.number(), name: z.string() })),
   poster_path: z.string().nullable(),
+  vote_average: z.number(),
   videos: z.object({
     results: z.array(
       z.object({ key: z.string(), site: z.string(), type: z.string() })
@@ -54,6 +56,7 @@ const showDetailsSchema = z.object({
   number_of_episodes: z.number(),
   genres: z.array(z.object({ id: z.number(), name: z.string() })),
   poster_path: z.string().nullable(),
+  vote_average: z.number(),
   videos: z.object({
     results: z.array(
       z.object({ key: z.string(), site: z.string(), type: z.string() })
@@ -98,14 +101,16 @@ export async function searchTMDb(q: string): Promise<SearchResult[]> {
 
     const res = resp.data.results
       .filter(
-        (item: any) => item.media_type === 'movie' || item.media_type === 'tv'
+        (item: SearchResult) =>
+          item.media_type === 'movie' || item.media_type === 'tv'
       )
-      .map((item: any) => {
+      .map((item: SearchResult) => {
         try {
           return searchResultSchema.parse({
             ...item,
             title: item.title || item.name,
             release_date: item.release_date || item.first_air_date,
+            vote_average: item.vote_average,
           });
         } catch (error) {
           console.error('Failed to parse item:', item, error);
@@ -150,6 +155,7 @@ export async function getRecommendations(
             title: item.title || item.name,
             release_date: item.release_date || item.first_air_date,
             media_type: mediaType,
+            vote_average: item.vote_average,
           });
         } catch (error) {
           console.error('Failed to parse recommendation item:', item, error);
