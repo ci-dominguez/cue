@@ -29,26 +29,21 @@ const Nav = () => {
         <ul className='font-inter font-medium text-md mt-6'>
           {links.map((i) => {
             return (
-              <li
-                key={i.title}
-                className={`flex items-center justify-between border-b-2 border-text-1 py-2 space-x-1.5 ${
-                  route.pathname === i.href
-                    ? ' border-opacity-100'
-                    : ' border-opacity-20'
-                }`}
-              >
+              <li key={i.title}>
                 <Link
                   to={i.href}
                   onClick={() => setExtended(false)}
-                  className={
-                    route.pathname === i.href ? 'text-text' : 'text-text-1'
-                  }
+                  className={`flex items-center justify-between border-b-2 border-text-1 py-2 space-x-1.5 w-full ${
+                    route.pathname === i.href
+                      ? 'text-text border-opacity-100'
+                      : 'text-text-1 border-opacity-20'
+                  }`}
                 >
-                  {i.title}
+                  <span>{i.title}</span>
+                  {route.pathname === i.href && (
+                    <div className='size-1 rounded-full bg-text' />
+                  )}
                 </Link>
-                {route.pathname === i.href && (
-                  <div className='size-1 rounded-full bg-text' />
-                )}
               </li>
             );
           })}
