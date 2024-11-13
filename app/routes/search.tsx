@@ -17,7 +17,8 @@ import Search from '~/components/Search';
 import Recommendations from '~/components/Recommendations';
 import type { MetaFunction } from '@remix-run/node';
 import Button from '~/components/ui/Button';
-import { SearchIcon } from 'lucide-react';
+import { Clock, Heart } from 'lucide-react';
+import Card, { CardContent, CardHeader } from '~/components/ui/Card';
 
 export const meta: MetaFunction = () => {
   return [
@@ -65,6 +66,7 @@ export const loader: LoaderFunction = async ({ request }) => {
           media_type: 'movie',
           release_date: movieDetails.release_date,
           poster_path: movieDetails.poster_path,
+          vote_average: movieDetails.vote_average,
         };
       } else {
         const showDetails = await getShowDetails(
@@ -77,6 +79,7 @@ export const loader: LoaderFunction = async ({ request }) => {
           media_type: 'tv',
           release_date: showDetails.first_air_date,
           poster_path: showDetails.poster_path,
+          vote_average: showDetails.vote_average,
         };
       }
     } catch (err) {
@@ -114,19 +117,100 @@ const SearchPage = () => {
 
   return (
     <>
-      <h1 className='mx-auto text-center text-4xl pb-4 font-medium'>
-        Give me recs for...
-      </h1>
+      <div className='flex flex-col px-6'>
+        <h1 className='font-lora font-semibold text-4xl mb-10'>
+          Find Your Next Big Binge
+        </h1>
 
-      <Search onItemSelect={handleItemSelect} />
+        <Search onItemSelect={handleItemSelect} />
+
+        <div className='flex flex-col space-y-4 mt-10'>
+          <Card>
+            <CardHeader>Recent Searches</CardHeader>
+            <CardContent>
+              <ul className='flex flex-col space-y-2'>
+                <li>
+                  <Link
+                    to='/'
+                    className='flex items-center space-x-1.5 text-text underline'
+                  >
+                    <Clock className='size-5' /> <span>Item</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to='/'
+                    className='flex items-center space-x-1.5 text-text underline'
+                  >
+                    <Clock className='size-5' /> <span>Item</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to='/'
+                    className='flex items-center space-x-1.5 text-text underline'
+                  >
+                    <Clock className='size-5' /> <span>Item</span>
+                  </Link>
+                </li>
+              </ul>
+              <Button variant='default' className='w-full'>
+                <Link
+                  to='/'
+                  className='py-2.5 px-6 flex space-x-1.5 items-center'
+                >
+                  <span>View All</span>
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>Your Favorites</CardHeader>
+            <CardContent>
+              <ul className='flex flex-col space-y-2'>
+                <li>
+                  <Link
+                    to='/'
+                    className='flex items-center space-x-1.5 text-text underline'
+                  >
+                    <Heart className='size-5' /> <span>Item</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to='/'
+                    className='flex items-center space-x-1.5 text-text underline'
+                  >
+                    <Heart className='size-5' /> <span>Item</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to='/'
+                    className='flex items-center space-x-1.5 text-text underline'
+                  >
+                    <Heart className='size-5' /> <span>Item</span>
+                  </Link>
+                </li>
+              </ul>
+              <Button variant='default' className='w-full mt-4'>
+                <Link
+                  to='/'
+                  className='py-2.5 px-6 flex space-x-1.5 items-center'
+                >
+                  <span>View All</span>
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
 
       {selectedItem && (
-        <div className='mt-20'>
-          <h2 className='text-2xl mb-4 mx-auto text-center'>
-            Best recs for people that like{' '}
-            <span className='text-accent'>
-              {selectedItem.title || selectedItem.name}
-            </span>
+        <div className='flex flex-col space-y-10 px-6 mt-10 bg-stone-800 text-content py-10'>
+          <h2 className='font-lora font-semibold text-2xl'>
+            Best recommendations for {selectedItem.title || selectedItem.name}:
           </h2>
           <Recommendations
             recommendations={recommendations}
