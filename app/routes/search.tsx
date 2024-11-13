@@ -19,6 +19,7 @@ import type { MetaFunction } from '@remix-run/node';
 import Button from '~/components/ui/Button';
 import { Clock, Heart } from 'lucide-react';
 import Card, { CardContent, CardHeader } from '~/components/ui/Card';
+import { getRecentSearches } from '~/utils/localStorage';
 
 export const meta: MetaFunction = () => {
   return [
@@ -99,6 +100,9 @@ const SearchPage = () => {
   const [selectedItem, setSelectedItem] = useState<SearchResult | null>(
     initialSelectedItem
   );
+
+  const [recentSearches, setRecentSearches] = useState<SearchResult[]>([]);
+
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -109,6 +113,11 @@ const SearchPage = () => {
       setSelectedItem(initialSelectedItem);
     }
   }, [searchParams, initialSelectedItem]);
+
+  useEffect(() => {
+    const storedRecents = getRecentSearches();
+    setRecentSearches(storedRecents);
+  }, []);
 
   const handleItemSelect = (item: SearchResult) => {
     setSelectedItem(item);
@@ -129,30 +138,28 @@ const SearchPage = () => {
             <CardHeader>Recent Searches</CardHeader>
             <CardContent>
               <ul className='flex flex-col space-y-2'>
-                <li>
-                  <Link
-                    to='/'
-                    className='flex items-center space-x-1.5 text-text underline'
-                  >
-                    <Clock className='size-5' /> <span>Item</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to='/'
-                    className='flex items-center space-x-1.5 text-text underline'
-                  >
-                    <Clock className='size-5' /> <span>Item</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to='/'
-                    className='flex items-center space-x-1.5 text-text underline'
-                  >
-                    <Clock className='size-5' /> <span>Item</span>
-                  </Link>
-                </li>
+                {recentSearches ? (
+                  recentSearches.slice(0, 5).map((i) => {
+                    return (
+                      <li key={i.id}>
+                        <Link
+                          to={`/${i.media_type}s/${i.id}`}
+                          className='flex items-center space-x-1.5 text-text underline'
+                        >
+                          <Clock className='size-5' />{' '}
+                          <span>{i.name || i.title}</span>
+                        </Link>
+                      </li>
+                    );
+                  })
+                ) : (
+                  <li>
+                    <span className='flex items-center space-x-1.5 text-text'>
+                      <Clock className='size-5' />{' '}
+                      <span>No searches saved.</span>
+                    </span>
+                  </li>
+                )}
               </ul>
               <Button variant='default' className='w-full'>
                 <Link
