@@ -19,7 +19,11 @@ import type { MetaFunction } from '@remix-run/node';
 import Button from '~/components/ui/Button';
 import { Clock, Heart } from 'lucide-react';
 import Card, { CardContent, CardHeader } from '~/components/ui/Card';
-import { getRecentSearches } from '~/utils/localStorage';
+import {
+  getRecentSearches,
+  getFavorites,
+  FavoriteItem,
+} from '~/utils/localStorage';
 
 export const meta: MetaFunction = () => {
   return [
@@ -102,6 +106,7 @@ const SearchPage = () => {
   );
 
   const [recentSearches, setRecentSearches] = useState<SearchResult[]>([]);
+  const [favs, setFavs] = useState<FavoriteItem[]>([]);
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -117,6 +122,9 @@ const SearchPage = () => {
   useEffect(() => {
     const storedRecents = getRecentSearches();
     setRecentSearches(storedRecents);
+
+    const storedFavorites = getFavorites();
+    setFavs(storedFavorites);
   }, []);
 
   const handleItemSelect = (item: SearchResult) => {
@@ -138,7 +146,7 @@ const SearchPage = () => {
             <CardHeader>Recent Searches</CardHeader>
             <CardContent>
               <ul className='flex flex-col space-y-2'>
-                {recentSearches ? (
+                {recentSearches.length > 0 ? (
                   recentSearches.slice(0, 5).map((i) => {
                     return (
                       <li key={i.id}>
@@ -176,30 +184,28 @@ const SearchPage = () => {
             <CardHeader>Your Favorites</CardHeader>
             <CardContent>
               <ul className='flex flex-col space-y-2'>
-                <li>
-                  <Link
-                    to='/'
-                    className='flex items-center space-x-1.5 text-text underline'
-                  >
-                    <Heart className='size-5' /> <span>Item</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to='/'
-                    className='flex items-center space-x-1.5 text-text underline'
-                  >
-                    <Heart className='size-5' /> <span>Item</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to='/'
-                    className='flex items-center space-x-1.5 text-text underline'
-                  >
-                    <Heart className='size-5' /> <span>Item</span>
-                  </Link>
-                </li>
+                {favs.length > 0 ? (
+                  favs.slice(0, 5).map((i) => {
+                    return (
+                      <li key={i.id}>
+                        <Link
+                          to={`/${i.media_type}s/${i.id}`}
+                          className='flex items-center space-x-1.5 text-text underline'
+                        >
+                          <Heart className='size-5 fill-red-600 stroke-red-600' />{' '}
+                          <span>{i.title || i.name}</span>
+                        </Link>
+                      </li>
+                    );
+                  })
+                ) : (
+                  <li>
+                    <span className='flex items-center space-x-1.5 text-text'>
+                      <Heart className='size-5' />{' '}
+                      <span>No favorites yet.</span>
+                    </span>
+                  </li>
+                )}
               </ul>
               <Button variant='default' className='w-full mt-4'>
                 <Link
@@ -214,7 +220,7 @@ const SearchPage = () => {
         </div>
       </div>
 
-      {selectedItem && (
+      {selectedItem ? (
         <div className='flex flex-col space-y-10 px-6 mt-10 bg-stone-800 text-content py-10'>
           <h2 className='font-lora font-semibold text-2xl'>
             Best recommendations for {selectedItem.title || selectedItem.name}:
@@ -224,6 +230,10 @@ const SearchPage = () => {
             isLoading={false}
             error={error}
           />
+        </div>
+      ) : (
+        <div className='flex flex-col space-y-10 px-6 mt-10 text-text py-10 text-center h-80'>
+          No searches yet.
         </div>
       )}
     </>
