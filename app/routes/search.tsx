@@ -170,11 +170,8 @@ const SearchPage = () => {
                 )}
               </ul>
               <Button variant='default' className='w-full'>
-                <Link
-                  to='/'
-                  className='py-2.5 px-6 flex space-x-1.5 items-center'
-                >
-                  <span>View All</span>
+                <Link to='/recently-viewed' className='w-full py-2.5 px-6'>
+                  View All
                 </Link>
               </Button>
             </CardContent>
@@ -208,11 +205,8 @@ const SearchPage = () => {
                 )}
               </ul>
               <Button variant='default' className='w-full mt-4'>
-                <Link
-                  to='/'
-                  className='py-2.5 px-6 flex space-x-1.5 items-center'
-                >
-                  <span>View All</span>
+                <Link to='/favorites' className='w-full py-2.5 px-6'>
+                  View All
                 </Link>
               </Button>
             </CardContent>
