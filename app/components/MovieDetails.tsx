@@ -72,7 +72,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                 title='YouTube video player'
                 allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                 allowFullScreen
-              ></iframe>
+              />
             </div>
           )}
           <ul className='grid grid-cols-2 md:grid-cols-3 gap-4 mt-10'>
