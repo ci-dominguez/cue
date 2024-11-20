@@ -50,12 +50,12 @@ const Search = ({ onItemSelect }: SearchProps) => {
         />
       </Form>
       {fuzzyResults.length > 0 && (
-        <div className='absolute z-20 w-full mt-14 overflow-hidden border-b-2 border-text border-opacity-10 pb-6 bg-content'>
-          <div className='max-h-60 overflow-y-auto space-y-2 bg-content'>
+        <div className='absolute z-20 w-full mt-10 overflow-hidden border-b-[1px] border-text border-opacity-10 pb-6 bg-content-1 rounded-md'>
+          <div className='max-h-60 overflow-y-auto space-y-2 bg-content-1 p-2'>
             {fuzzyResults.map((result) => (
               <button
                 key={result.id}
-                className='px-4 py-2 cursor-pointer w-full text-left border-2 border-text border-opacity-10'
+                className='px-4 py-2 cursor-pointer w-full text-left rounded-md border-[1px] border-text border-opacity-10 bg-content'
                 onClick={() => {
                   onItemSelect(result);
                   //Save to recent storage
