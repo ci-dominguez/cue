@@ -39,10 +39,10 @@ const AboutPage = () => {
       <div className='flex flex-col space-y-8 py-10 px-6 mt-10 bg-stone-800'>
         <Card>
           <CardHeader>
-            <h3 className='flex space-x-1.5 items-center'>
+            <span className='flex space-x-1.5 items-center'>
               <SearchIcon className='size-8' />
               <span>Smart Search</span>
-            </h3>
+            </span>
           </CardHeader>
           <CardContent>
             A fast and flexible fuzzy search powered by fuse.js.
@@ -50,10 +50,10 @@ const AboutPage = () => {
         </Card>
         <Card>
           <CardHeader>
-            <h3 className='flex space-x-1.5 items-center'>
+            <span className='flex space-x-1.5 items-center'>
               <Star className='size-8' />
               <span>Personalized</span>
-            </h3>
+            </span>
           </CardHeader>
           <CardContent>
             Save your favorites and access your recently viewed content.
@@ -61,10 +61,10 @@ const AboutPage = () => {
         </Card>
         <Card>
           <CardHeader>
-            <h3 className='flex space-x-1.5 items-center'>
+            <span className='flex space-x-1.5 items-center'>
               <Info className='size-8' />
               <span>Detailed Info</span>
-            </h3>
+            </span>
           </CardHeader>
           <CardContent>
             Comprehensive details including cast, descriptions, and trailers.
