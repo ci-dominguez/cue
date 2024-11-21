@@ -12,7 +12,7 @@ import { NavProvider } from './contexts/NavContext';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='en'>
+    <html lang='en' className='scroll-smooth'>
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
@@ -28,7 +28,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <NavProvider>
           <Nav />
-          <main className='flex flex-col py-6 min-h-screen bg-content text-text font-inter'>
+          <main className='flex flex-col py-6 min-h-screen bg-content text-text font-inter sm:py-10 md:py-12 lg:py-18'>
             {children}
           </main>
           <Footer />
