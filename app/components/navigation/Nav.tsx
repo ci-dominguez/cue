@@ -19,9 +19,31 @@ const Nav = () => {
           <img src={Logo} alt='Logo for RecMe' className='h-[2rem] w-auto' />
           <h1 className='font-inter font-bold text-xl'>Cue</h1>
         </Link>
-        <button onClick={() => setExtended(!extended)}>
+
+        <button
+          onClick={() => setExtended(!extended)}
+          className='block md:hidden'
+        >
           {extended ? <X className='size-6' /> : <Menu className='size-6' />}
         </button>
+
+        {/** Full nav Links */}
+        <ul className='hidden md:flex space-x-8 font-inter font-medium text-md mx-auto'>
+          {links.map((i) => {
+            return (
+              <li key={i.title}>
+                <Link to={i.href} className='flex space-x-1.5 items-center'>
+                  <div
+                    className={`size-1 rounded-full ${
+                      route.pathname === i.href ? 'bg-text' : 'bg-content'
+                    }`}
+                  />
+                  <span>{i.title}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </div>
 
       {/** Mobile Links */}
