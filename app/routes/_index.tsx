@@ -50,16 +50,13 @@ export default function Index() {
                 onClick={() => {
                   setExtended(false);
                 }}
-                className='py-2.5 px-6 md:py-3.5 md:px-8 flex space-x-1.5 items-center lg:text-base'
+                className='py-2.5 px-6 md:py-3.5 md:px-8 flex space-x-1.5 items-center'
               >
                 <span>Start Searching</span> <SearchIcon className='size-5' />
               </Link>
             </Button>
             <Button variant='secondary'>
-              <Link
-                to='#about'
-                className='py-2.5 px-6 md:py-3.5 md:px-8 lg:text-base'
-              >
+              <Link to='#about' className='py-2.5 px-6 md:py-3.5 md:px-8'>
                 Learn More
               </Link>
             </Button>
