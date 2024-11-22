@@ -8,7 +8,7 @@ export const links = [
     href: '/favorites',
   },
   {
-    title: 'Recently Viewed',
+    title: 'Recents',
     href: '/recently-viewed',
   },
 ];
