@@ -29,14 +29,23 @@ const Nav = () => {
           </button>
 
           {/** Full nav Links */}
-          <ul className='hidden md:flex space-x-8 font-inter font-medium'>
+          <ul className='hidden md:flex space-x-8 font-inter'>
             {links.map((i) => {
               return (
                 <li key={i.title}>
-                  <Link to={i.href} className='flex space-x-1.5 items-center'>
+                  <Link
+                    to={i.href}
+                    className={`flex space-x-1.5 items-center hover:text-text group ${
+                      route.pathname === i.href
+                        ? 'font-semibold text-text-1'
+                        : 'font-medium text-text'
+                    }`}
+                  >
                     <div
-                      className={`size-1 rounded-full ${
-                        route.pathname === i.href ? 'bg-text' : 'bg-content'
+                      className={`size-1 rounded-full group-hover:bg-text-1 ${
+                        route.pathname === i.href
+                          ? 'bg-orange-500'
+                          : 'bg-content'
                       }`}
                     />
                     <span>{i.title}</span>
@@ -49,7 +58,7 @@ const Nav = () => {
 
         {/** Mobile Links */}
         {extended && (
-          <ul className='font-inter font-medium text-md mt-6'>
+          <ul className='font-inter text-md mt-6'>
             {links.map((i) => {
               return (
                 <li key={i.title}>
@@ -58,13 +67,15 @@ const Nav = () => {
                     onClick={() => setExtended(false)}
                     className={`flex items-center py-2 gap-1.5 w-full ${
                       route.pathname === i.href
-                        ? 'text-text border-opacity-100'
-                        : 'text-text-1 border-opacity-20'
+                        ? 'font-semibold text-text'
+                        : 'font-medium text-text-1'
                     }`}
                   >
                     <div
                       className={`size-1 rounded-full ${
-                        route.pathname === i.href ? 'bg-text' : 'bg-content'
+                        route.pathname === i.href
+                          ? 'bg-orange-500'
+                          : 'bg-content'
                       }`}
                     />
                     <span>{i.title}</span>
