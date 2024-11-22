@@ -11,8 +11,4 @@ export const links = [
     title: 'Recently Viewed',
     href: '/recently-viewed',
   },
-  {
-    title: 'About',
-    href: '/about',
-  },
 ];
