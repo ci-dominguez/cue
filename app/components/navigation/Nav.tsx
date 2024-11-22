@@ -9,68 +9,72 @@ const Nav = () => {
   const route = useLocation();
 
   return (
-    <nav className='px-6 py-4 flex flex-col bg-content'>
-      <div className='w-full flex items-center justify-between'>
-        <Link
-          to='/'
-          onClick={() => setExtended(false)}
-          className='flex gap-x-3 items-center'
-        >
-          <img src={Logo} alt='Logo for RecMe' className='h-[2rem] w-auto' />
-          <h1 className='font-inter font-bold text-xl'>Cue</h1>
-        </Link>
+    <nav className='top-0 z-50 sticky backdrop-blur-sm border-b bg-content'>
+      <div className='max-w-screen-xl mx-auto px-6 sm:px-10 md:px-12 lg:px-16 py-4 flex flex-col '>
+        <div className='w-full flex items-center justify-between'>
+          <Link
+            to='/'
+            onClick={() => setExtended(false)}
+            className='flex gap-x-3 items-center'
+          >
+            <img src={Logo} alt='Logo for RecMe' className='h-[2rem] w-auto' />
+            <h1 className='font-inter font-bold text-xl'>Cue</h1>
+          </Link>
 
-        <button
-          onClick={() => setExtended(!extended)}
-          className='block md:hidden'
-        >
-          {extended ? <X className='size-6' /> : <Menu className='size-6' />}
-        </button>
+          <button
+            onClick={() => setExtended(!extended)}
+            className='block md:hidden'
+          >
+            {extended ? <X className='size-6' /> : <Menu className='size-6' />}
+          </button>
 
-        {/** Full nav Links */}
-        <ul className='hidden md:flex space-x-8 font-inter font-medium text-md mx-auto'>
-          {links.map((i) => {
-            return (
-              <li key={i.title}>
-                <Link to={i.href} className='flex space-x-1.5 items-center'>
-                  <div
-                    className={`size-1 rounded-full ${
-                      route.pathname === i.href ? 'bg-text' : 'bg-content'
+          {/** Full nav Links */}
+          <ul className='hidden md:flex space-x-8 font-inter font-medium'>
+            {links.map((i) => {
+              return (
+                <li key={i.title}>
+                  <Link to={i.href} className='flex space-x-1.5 items-center'>
+                    <div
+                      className={`size-1 rounded-full ${
+                        route.pathname === i.href ? 'bg-text' : 'bg-content'
+                      }`}
+                    />
+                    <span>{i.title}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        {/** Mobile Links */}
+        {extended && (
+          <ul className='font-inter font-medium text-md mt-6'>
+            {links.map((i) => {
+              return (
+                <li key={i.title}>
+                  <Link
+                    to={i.href}
+                    onClick={() => setExtended(false)}
+                    className={`flex items-center py-2 gap-1.5 w-full ${
+                      route.pathname === i.href
+                        ? 'text-text border-opacity-100'
+                        : 'text-text-1 border-opacity-20'
                     }`}
-                  />
-                  <span>{i.title}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+                  >
+                    <div
+                      className={`size-1 rounded-full ${
+                        route.pathname === i.href ? 'bg-text' : 'bg-content'
+                      }`}
+                    />
+                    <span>{i.title}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </div>
-
-      {/** Mobile Links */}
-      {extended && (
-        <ul className='font-inter font-medium text-md mt-6'>
-          {links.map((i) => {
-            return (
-              <li key={i.title}>
-                <Link
-                  to={i.href}
-                  onClick={() => setExtended(false)}
-                  className={`flex items-center justify-between border-b-2 border-text-1 py-2 space-x-1.5 w-full ${
-                    route.pathname === i.href
-                      ? 'text-text border-opacity-100'
-                      : 'text-text-1 border-opacity-20'
-                  }`}
-                >
-                  <span>{i.title}</span>
-                  {route.pathname === i.href && (
-                    <div className='size-1 rounded-full bg-text' />
-                  )}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      )}
     </nav>
   );
 };
