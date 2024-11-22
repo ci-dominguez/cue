@@ -5,7 +5,7 @@ interface ButtonProps {
 }
 const Button = ({ children, variant = 'default', className }: ButtonProps) => {
   const variantStylesMap: Record<string, string> = {
-    default: 'bg-text text-content hover:bg-accent hover:text-text',
+    default: 'bg-text text-content hover:bg-[#222]',
     secondary: 'bg-content-1 text-text-1 hover:bg-content-2 hover:text-text',
   };
 
