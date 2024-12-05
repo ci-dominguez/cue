@@ -12,6 +12,7 @@ import {
   getShowDetails,
   SearchResult,
   searchTMDb,
+  fetchTrending,
 } from '~/utils/tmdb';
 import Search from '~/components/Search';
 import Recommendations from '~/components/Recommendations';
@@ -24,6 +25,7 @@ import {
   getFavorites,
   FavoriteItem,
 } from '~/utils/localStorage';
+import PosterCard from '~/components/ui/PosterCard';
 
 export const meta: MetaFunction = () => {
   return [
@@ -46,6 +48,8 @@ export const loader: LoaderFunction = async ({ request }) => {
   let searchResults: SearchResult[] = [];
   let selectedItem: SearchResult | null = null;
   let error: string | null = null;
+
+  const trendingMovies = await fetchTrending();
 
   if (searchQuery) {
     try {
@@ -92,7 +96,13 @@ export const loader: LoaderFunction = async ({ request }) => {
     }
   }
 
-  return { recommendations, searchResults, selectedItem, error };
+  return {
+    trendingMovies,
+    recommendations,
+    searchResults,
+    selectedItem,
+    error,
+  };
 };
 
 const SearchPage = () => {
@@ -100,12 +110,15 @@ const SearchPage = () => {
     recommendations,
     selectedItem: initialSelectedItem,
     error,
+    trendingMovies,
   } = useLoaderData<typeof loader>();
+
   const [selectedItem, setSelectedItem] = useState<SearchResult | null>(
     initialSelectedItem
   );
 
   const [recentSearches, setRecentSearches] = useState<SearchResult[]>([]);
+
   const [favs, setFavs] = useState<FavoriteItem[]>([]);
 
   const [searchParams] = useSearchParams();
@@ -134,101 +147,139 @@ const SearchPage = () => {
 
   return (
     <>
-      <div className='flex flex-col px-6'>
-        <h1 className='font-lora font-semibold text-4xl mb-10'>
-          Find Your Next Big Binge
-        </h1>
+      <section className='w-full max-w-screen-2xl mx-auto pb-6 sm:pb-10 md:pb-12 lg:pb-18'>
+        <div className='w-full max-w-screen-xl mx-auto px-8 sm:px-10 md:px-12 lg:px-16'>
+          <h1 className='pb-4 font-lora font-semibold tracking-tight text-4xl md:text-5xl lg:text-6xl max-w-[18ch]'>
+            Find Your Next Big Binge
+          </h1>
 
-        <Search onItemSelect={handleItemSelect} />
+          <h2 className='pt-6 font-lora pb-4 font-semibold tracking-tight text-2xl md:text-3xl lg:text-4xl'>
+            Search Your Favorites
+          </h2>
+          <Search onItemSelect={handleItemSelect} />
 
-        <div className='flex flex-col space-y-4 mt-10'>
-          <Card>
-            <CardHeader>Recent Searches</CardHeader>
-            <CardContent>
-              <ul className='flex flex-col space-y-2'>
-                {recentSearches.length > 0 ? (
-                  recentSearches.slice(0, 5).map((i) => {
-                    return (
-                      <li key={i.id}>
-                        <Link
-                          to={`/${i.media_type}s/${i.id}`}
-                          className='flex items-center space-x-1.5 text-text underline'
-                        >
-                          <Clock className='size-5' />{' '}
-                          <span>{i.name || i.title}</span>
-                        </Link>
-                      </li>
-                    );
-                  })
-                ) : (
-                  <li>
-                    <span className='flex items-center space-x-1.5 text-text'>
-                      <Clock className='size-5' />{' '}
-                      <span>No searches saved.</span>
-                    </span>
-                  </li>
-                )}
-              </ul>
-              <Button variant='default' className='w-full'>
-                <Link to='/recently-viewed' className='w-full py-2.5 px-6'>
-                  View All
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
+          <div className='flex flex-col md:flex-row gap-4 mt-10'>
+            <Card>
+              <CardHeader>Recent Searches</CardHeader>
+              <CardContent>
+                <ul className='flex flex-col space-y-2'>
+                  {recentSearches.length > 0 ? (
+                    recentSearches.slice(0, 5).map((i) => {
+                      return (
+                        <li key={i.id}>
+                          <Link
+                            to={`/${i.media_type}s/${i.id}`}
+                            className='flex items-center space-x-1.5 text-text-1 underline hover:text-black'
+                          >
+                            <Clock className='size-5' />{' '}
+                            <span>{i.name || i.title}</span>
+                          </Link>
+                        </li>
+                      );
+                    })
+                  ) : (
+                    <li>
+                      <span className='flex items-center space-x-1.5 text-text'>
+                        <Clock className='size-5' />{' '}
+                        <span>No searches saved.</span>
+                      </span>
+                    </li>
+                  )}
+                </ul>
+                <Button variant='default' className='w-full'>
+                  <Link to='/recently-viewed' className='w-full py-2.5 px-6'>
+                    View All
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader>Your Favorites</CardHeader>
-            <CardContent>
-              <ul className='flex flex-col space-y-2'>
-                {favs.length > 0 ? (
-                  favs.slice(0, 5).map((i) => {
-                    return (
-                      <li key={i.id}>
-                        <Link
-                          to={`/${i.media_type}s/${i.id}`}
-                          className='flex items-center space-x-1.5 text-text underline'
-                        >
-                          <Heart className='size-5 fill-red-600 stroke-red-600' />{' '}
-                          <span>{i.title || i.name}</span>
-                        </Link>
-                      </li>
-                    );
-                  })
-                ) : (
-                  <li>
-                    <span className='flex items-center space-x-1.5 text-text'>
-                      <Heart className='size-5' />{' '}
-                      <span>No favorites yet.</span>
-                    </span>
-                  </li>
-                )}
-              </ul>
-              <Button variant='default' className='w-full mt-4'>
-                <Link to='/favorites' className='w-full py-2.5 px-6'>
-                  View All
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
+            <Card>
+              <CardHeader>Your Favorites</CardHeader>
+              <CardContent>
+                <ul className='flex flex-col space-y-2'>
+                  {favs.length > 0 ? (
+                    favs.slice(0, 5).map((i) => {
+                      return (
+                        <li key={i.id}>
+                          <Link
+                            to={`/${i.media_type}s/${i.id}`}
+                            className='flex items-center space-x-1.5 text-text-1 underline hover:text-black'
+                          >
+                            <Heart className='size-5 fill-red-600 stroke-red-600' />{' '}
+                            <span>{i.title || i.name}</span>
+                          </Link>
+                        </li>
+                      );
+                    })
+                  ) : (
+                    <li>
+                      <span className='flex items-center space-x-1.5 text-text'>
+                        <Heart className='size-5' />{' '}
+                        <span>No favorites yet.</span>
+                      </span>
+                    </li>
+                  )}
+                </ul>
+                <Button variant='default' className='w-full mt-4'>
+                  <Link to='/favorites' className='w-full py-2.5 px-6'>
+                    View All
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-      </div>
+      </section>
 
       {selectedItem ? (
-        <div className='flex flex-col space-y-10 px-6 mt-10 bg-stone-800 text-content py-10'>
-          <h2 className='font-lora font-semibold text-2xl'>
-            Best recommendations for {selectedItem.title || selectedItem.name}:
-          </h2>
-          <Recommendations
-            recommendations={recommendations}
-            isLoading={false}
-            error={error}
-          />
-        </div>
+        <section className='flex bg-stone-800 text-content'>
+          <div className='w-full max-w-screen-2xl mx-auto py-6 sm:py-10 md:py-12 lg:py-18'>
+            <div className='w-full max-w-screen-xl mx-auto px-8 sm:px-10 md:px-12 lg:px-16'>
+              <h2
+                id='search'
+                className='font-lora pb-10 font-semibold tracking-tight text-2xl md:text-3xl lg:text-4xl'
+              >
+                Best recommendations for{' '}
+                {selectedItem.title || selectedItem.name}:
+              </h2>
+              <Recommendations
+                recommendations={recommendations}
+                isLoading={false}
+                error={error}
+              />
+            </div>
+          </div>
+        </section>
       ) : (
-        <div className='flex flex-col space-y-10 px-6 mt-10 text-text py-10 text-center h-80'>
-          No searches yet.
-        </div>
+        <section className='flex bg-stone-800 text-content'>
+          <div className='w-full max-w-screen-2xl mx-auto py-6 sm:py-10 md:py-12 lg:py-18'>
+            <div className='w-full max-w-screen-xl mx-auto px-8 sm:px-10 md:px-12 lg:px-16'>
+              <h2 className='font-lora pb-4 font-semibold tracking-tight text-2xl md:text-3xl lg:text-4xl'>
+                Get Personalized Recs With The Search{' '}
+                <Link
+                  to='#search'
+                  className='underline text-orange-500 hover:text-orange-300'
+                >
+                  Above
+                </Link>
+              </h2>
+              <p className='tracking-micro lg:text-xl w-full max-w-lg lg:w-1/2 lg:max-w-xl'>
+                In the mean time, here is some trending content for you!
+              </p>
+
+              <div className='pt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-10 max-w-7xl mx-auto'>
+                {trendingMovies.length > 0 ? (
+                  trendingMovies.map((i) => {
+                    return <PosterCard variant='default' key={i.id} item={i} />;
+                  })
+                ) : (
+                  <>No Results</>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
       )}
     </>
   );
