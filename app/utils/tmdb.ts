@@ -233,3 +233,19 @@ export async function getActorImageUrl(
     return '../../public/imgs/profile.svg';
   }
 }
+
+export async function fetchTrending(): Promise<SearchResult[]> {
+  try {
+    const resp = await axios.get(
+      `${TMDB_BASE_URL}/trending/movie/week?language=en-US`,
+      {
+        params: { api_key: TMDB_API_KEY },
+      }
+    );
+    console.log('Trending Data Server: ' + resp.data.results.slice(0, 25));
+    return resp.data.results.slice(0, 25);
+  } catch (error) {
+    console.error(`Error fetching trending list for movies from TMDB:`, error);
+    throw new Error(`Failed to fetch trending list for movies from TMDB`);
+  }
+}
