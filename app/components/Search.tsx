@@ -39,7 +39,7 @@ const Search = ({ onItemSelect }: SearchProps) => {
       : [];
 
   return (
-    <div className='flex flex-col w-full max-w-md mx-auto relative'>
+    <div className='flex flex-col w-full max-w-md relative'>
       <Form method='get' className='w-full'>
         <Input
           name='q'
