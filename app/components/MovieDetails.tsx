@@ -9,7 +9,7 @@ interface MovieDetailsProps {
 
 const MovieDetails = ({ movie }: MovieDetailsProps) => {
   return (
-    <div className='grid md:grid-cols-3 gap-10 px-6'>
+    <div className='grid md:grid-cols-3 gap-10 w-full max-w-screen-xl mx-auto px-8 sm:px-10 md:px-12 lg:px-16'>
       <div className='md:col-span-1'>
         <div className='sticky top-8'>
           <img
@@ -75,17 +75,20 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
               />
             </div>
           )}
-          <ul className='grid grid-cols-2 md:grid-cols-3 gap-4 mt-10'>
-            {movie.credits.cast.slice(0, 6).map((actor) => (
-              <li key={actor.id} className='flex items-center gap-2'>
-                <ActorImage
-                  profilePath={actor.profile_path}
-                  name={actor.name}
-                />
-                <span>{actor.name}</span>
-              </li>
-            ))}
-          </ul>
+          <div className='mt-10'>
+            <h2 className='font-lora text-2xl font-semibold mb-2'>Cast</h2>
+            <ul className='grid grid-cols-2 md:grid-cols-3 gap-4'>
+              {movie.credits.cast.slice(0, 6).map((actor) => (
+                <li key={actor.id} className='flex items-center gap-2'>
+                  <ActorImage
+                    profilePath={actor.profile_path}
+                    name={actor.name}
+                  />
+                  <span>{actor.name}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>

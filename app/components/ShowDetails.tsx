@@ -9,7 +9,7 @@ interface ShowDetailsProps {
 
 const ShowDetails = ({ show }: ShowDetailsProps) => {
   return (
-    <div className='grid md:grid-cols-3 gap-10 px-6'>
+    <div className='grid md:grid-cols-3 gap-10 w-full max-w-screen-xl mx-auto px-8 sm:px-10 md:px-12 lg:px-16'>
       <div className='md:col-span-1'>
         <div className='sticky top-8'>
           <img
