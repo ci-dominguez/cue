@@ -30,7 +30,7 @@ export default function ShowRoute() {
               id='search'
               className='font-lora pb-10 font-semibold tracking-tight text-2xl md:text-3xl lg:text-4xl'
             >
-              Movies You Might Like
+              Shows You Might Like
             </h2>
             <Recommendations
               recommendations={recs}
