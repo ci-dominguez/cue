@@ -15,6 +15,15 @@ const ActorImage = ({
     getActorImageUrl(profilePath).then(setImageUrl);
   }, [profilePath]);
 
+  if (!profilePath)
+    return (
+      <img
+        src={Pfp}
+        alt={name}
+        className='w-10 h-10 rounded-full object-cover'
+      />
+    );
+
   return (
     <img
       src={imageUrl}
