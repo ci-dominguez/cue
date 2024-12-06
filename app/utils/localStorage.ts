@@ -54,7 +54,7 @@ export const addFavorite = (item: StorageItem) => {
       (fav) => fav.id === item.id && fav.media_type === item.media_type
     )
   ) {
-    saveFavorites([...favorites, item]);
+    saveFavorites([item, ...favorites]);
   }
 };
 
