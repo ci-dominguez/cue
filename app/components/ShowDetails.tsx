@@ -76,17 +76,20 @@ const ShowDetails = ({ show }: ShowDetailsProps) => {
               />
             </div>
           )}
-          <ul className='grid grid-cols-2 md:grid-cols-3 gap-4 mt-10'>
-            {show.credits.cast.slice(0, 6).map((actor) => (
-              <li key={actor.id} className='flex items-center gap-2'>
-                <ActorImage
-                  profilePath={actor.profile_path}
-                  name={actor.name}
-                />
-                <span>{actor.name}</span>
-              </li>
-            ))}
-          </ul>
+          <div className='mt-10'>
+            <h2 className='font-lora text-2xl font-semibold mb-2'>Cast</h2>
+            <ul className='grid grid-cols-2 md:grid-cols-3 gap-4'>
+              {show.credits.cast.slice(0, 6).map((actor) => (
+                <li key={actor.id} className='flex items-center gap-2'>
+                  <ActorImage
+                    profilePath={actor.profile_path}
+                    name={actor.name}
+                  />
+                  <span>{actor.name}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
