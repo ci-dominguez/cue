@@ -1,8 +1,10 @@
 import { LoaderFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
+import { useEffect } from 'react';
 import { getRecommendations, getShowDetails } from '~/utils/tmdb';
 import ShowDetails from '~/components/ShowDetails';
 import Recommendations from '~/components/Recommendations';
+import { addRecentlyViewed } from '~/utils/localStorage';
 
 export const loader: LoaderFunction = async ({ params }) => {
   const showId = params.slug;
@@ -18,6 +20,11 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export default function ShowRoute() {
   const { show, recs } = useLoaderData<typeof loader>();
+
+  useEffect(() => {
+    addRecentlyViewed(show);
+  });
+
   return (
     <div>
       <section className='w-full max-w-screen-2xl mx-auto pb-6 sm:pb-10 md:pb-12 lg:pb-18'>

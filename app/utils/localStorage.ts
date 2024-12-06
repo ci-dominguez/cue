@@ -1,5 +1,3 @@
-import { SearchResult } from './tmdb';
-
 export interface StorageItem {
   id: number;
   title: string;
@@ -11,49 +9,31 @@ export interface StorageItem {
 }
 
 const RECENTLY_VIEWED_KEY = 'recentlyViewed';
-const RECENT_SEARCHES_KEY = 'recents';
 const FAVORITES_KEY = 'favorites';
 
-//Recently viewed
+// Recently viewed
 export const getRecentlyViewed = () => {
   const storedRecents = localStorage.getItem(RECENTLY_VIEWED_KEY);
   return storedRecents ? JSON.parse(storedRecents) : [];
 };
 
-export const saveRecentlyViewed = (viewedItem: StorageItem) => {
+export const saveRecentlyViewed = (viewedItem: StorageItem[]) => {
   localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(viewedItem));
 };
 
-export const addRecentlyViewed = () => {};
+export const addRecentlyViewed = (viewedItem: StorageItem) => {
+  const existingRecents = getRecentlyViewed();
 
-//Recent searches
-
-export const getRecentSearches = () => {
-  const storedSearches = localStorage.getItem(RECENT_SEARCHES_KEY);
-  return storedSearches ? JSON.parse(storedSearches) : [];
-};
-
-export const saveRecentSearches = (searches: SearchResult[]) => {
-  localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(searches));
-};
-
-export const addRecentSearch = (newSearch: SearchResult) => {
-  const existingSearches = getRecentSearches();
-
-  //Removing duplicates
-  const filteredSearches = existingSearches.filter(
-    (search: SearchResult) =>
-      !(
-        search.id === newSearch.id && search.media_type === newSearch.media_type
-      )
+  // Remove duplicates
+  const filteredRecents = existingRecents.filter(
+    (recent: StorageItem) => recent.id !== viewedItem.id
   );
 
-  const updatedSearches = [newSearch, ...filteredSearches];
+  const updatedRecents = [viewedItem, ...filteredRecents];
 
-  //Limit local storage to 25 items
-  if (updatedSearches.length > 25) updatedSearches.pop();
+  if (updatedRecents.length > 25) updatedRecents.pop();
 
-  saveRecentSearches(updatedSearches);
+  saveRecentlyViewed(updatedRecents);
 };
 
 //Favorites

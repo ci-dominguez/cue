@@ -21,9 +21,9 @@ import Button from '~/components/ui/Button';
 import { Clock, Heart } from 'lucide-react';
 import Card, { CardContent, CardHeader } from '~/components/ui/Card';
 import {
-  getRecentSearches,
   getFavorites,
   StorageItem,
+  getRecentlyViewed,
 } from '~/utils/localStorage';
 import PosterCard from '~/components/ui/PosterCard';
 
@@ -117,7 +117,7 @@ const SearchPage = () => {
     initialSelectedItem
   );
 
-  const [recentSearches, setRecentSearches] = useState<SearchResult[]>([]);
+  const [recentlyViewed, setRecentlyViewed] = useState<StorageItem[]>([]);
 
   const [favs, setFavs] = useState<StorageItem[]>([]);
 
@@ -133,8 +133,8 @@ const SearchPage = () => {
   }, [searchParams, initialSelectedItem]);
 
   useEffect(() => {
-    const storedRecents = getRecentSearches();
-    setRecentSearches(storedRecents);
+    const storedRecents = getRecentlyViewed();
+    setRecentlyViewed(storedRecents);
 
     const storedFavorites = getFavorites();
     setFavs(storedFavorites);
@@ -160,11 +160,11 @@ const SearchPage = () => {
 
           <div className='flex flex-col md:flex-row gap-4 mt-10'>
             <Card>
-              <CardHeader>Recent Searches</CardHeader>
+              <CardHeader>Recently Viewed</CardHeader>
               <CardContent>
-                <ul className='flex flex-col space-y-2'>
-                  {recentSearches.length > 0 ? (
-                    recentSearches.slice(0, 5).map((i) => {
+                <ul className='flex-1 flex flex-col gap-2'>
+                  {recentlyViewed.length > 0 ? (
+                    recentlyViewed.slice(0, 4).map((i) => {
                       return (
                         <li key={i.id}>
                           <Link
@@ -186,7 +186,7 @@ const SearchPage = () => {
                     </li>
                   )}
                 </ul>
-                <Button variant='default' className='w-full'>
+                <Button variant='default' className='w-full mt-auto'>
                   <Link to='/recently-viewed' className='w-full py-2.5 px-6'>
                     View All
                   </Link>
@@ -197,9 +197,9 @@ const SearchPage = () => {
             <Card>
               <CardHeader>Your Favorites</CardHeader>
               <CardContent>
-                <ul className='flex flex-col space-y-2'>
+                <ul className='flex-1 flex flex-col gap-2'>
                   {favs.length > 0 ? (
-                    favs.slice(0, 5).map((i) => {
+                    favs.slice(0, 4).map((i) => {
                       return (
                         <li key={i.id}>
                           <Link
@@ -221,7 +221,7 @@ const SearchPage = () => {
                     </li>
                   )}
                 </ul>
-                <Button variant='default' className='w-full mt-4'>
+                <Button variant='default' className='w-full mt-auto'>
                   <Link to='/favorites' className='w-full py-2.5 px-6'>
                     View All
                   </Link>

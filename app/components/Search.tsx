@@ -9,7 +9,6 @@ import useDebounce from '../hooks/useDebounce';
 import Fuse from 'fuse.js';
 import { SearchResult } from '~/utils/tmdb';
 import Input from '~/components/ui/Input';
-import { addRecentSearch } from '~/utils/localStorage';
 
 interface SearchProps {
   onItemSelect: (item: SearchResult) => void;
@@ -58,15 +57,6 @@ const Search = ({ onItemSelect }: SearchProps) => {
                 className='px-4 py-2 cursor-pointer w-full text-left rounded-md border-[1px] border-text border-opacity-10 bg-content'
                 onClick={() => {
                   onItemSelect(result);
-                  //Save to recent storage
-                  addRecentSearch({
-                    id: result.id,
-                    title: result.title || result.name,
-                    media_type: result.media_type,
-                    release_date: result.release_date,
-                    poster_path: result.poster_path,
-                    vote_average: result.vote_average,
-                  });
                   setQuery('');
                 }}
               >

@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 import PosterCard from '~/components/ui/PosterCard';
-import { getRecentSearches } from '~/utils/localStorage';
-import { SearchResult } from '~/utils/tmdb';
+import { getRecentlyViewed, StorageItem } from '~/utils/localStorage';
 
 const RecentsPage = () => {
-  const [recents, setRecents] = useState<SearchResult[]>([]);
+  const [recentlyViewed, setRecentlyViewed] = useState<StorageItem[]>([]);
 
   useEffect(() => {
-    const storedRecents = getRecentSearches();
-    setRecents(storedRecents);
+    const storedRecents = getRecentlyViewed();
+    setRecentlyViewed(storedRecents);
   }, []);
   return (
     <>
@@ -19,8 +18,8 @@ const RecentsPage = () => {
           </h1>
 
           <div className='pt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-10 max-w-7xl mx-auto'>
-            {recents.length > 0 ? (
-              recents.map((i) => {
+            {recentlyViewed.length > 0 ? (
+              recentlyViewed.map((i) => {
                 return (
                   <PosterCard
                     variant='alt'
@@ -35,7 +34,7 @@ const RecentsPage = () => {
                 );
               })
             ) : (
-              <>No favorites</>
+              <>No activity saved.</>
             )}
           </div>
         </div>
