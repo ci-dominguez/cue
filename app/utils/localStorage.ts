@@ -12,7 +12,7 @@ const RECENTLY_VIEWED_KEY = 'recentlyViewed';
 const FAVORITES_KEY = 'favorites';
 
 // Recently viewed
-export const getRecentlyViewed = () => {
+export const getRecentlyViewed = (): StorageItem[] => {
   const storedRecents = localStorage.getItem(RECENTLY_VIEWED_KEY);
   return storedRecents ? JSON.parse(storedRecents) : [];
 };
@@ -21,19 +21,16 @@ export const saveRecentlyViewed = (viewedItem: StorageItem[]) => {
   localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(viewedItem));
 };
 
-export const addRecentlyViewed = (viewedItem: StorageItem) => {
+export const addRecentlyViewed = (item: StorageItem) => {
   const existingRecents = getRecentlyViewed();
 
-  // Remove duplicates
-  const filteredRecents = existingRecents.filter(
-    (recent: StorageItem) => recent.id !== viewedItem.id
-  );
-
-  const updatedRecents = [viewedItem, ...filteredRecents];
-
-  if (updatedRecents.length > 25) updatedRecents.pop();
-
-  saveRecentlyViewed(updatedRecents);
+  if (
+    !existingRecents.some(
+      (recent) => recent.id === item.id && recent.media_type === item.media_type
+    )
+  ) {
+    saveRecentlyViewed([item, ...existingRecents]);
+  }
 };
 
 //Favorites

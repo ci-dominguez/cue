@@ -28,6 +28,7 @@ const movieDetailsSchema = z.object({
   genres: z.array(z.object({ id: z.number(), name: z.string() })),
   poster_path: z.string().nullable(),
   vote_average: z.number(),
+  media_type: z.string().default('movie'),
   videos: z.object({
     results: z.array(
       z.object({ key: z.string(), site: z.string(), type: z.string() })
@@ -57,6 +58,7 @@ const showDetailsSchema = z.object({
   genres: z.array(z.object({ id: z.number(), name: z.string() })),
   poster_path: z.string().nullable(),
   vote_average: z.number(),
+  media_type: z.string().default('tv'),
   videos: z.object({
     results: z.array(
       z.object({ key: z.string(), site: z.string(), type: z.string() })
