@@ -4,11 +4,11 @@ import {
   isFavorite,
   addFavorite,
   removeFavorite,
-  FavoriteItem,
+  StorageItem,
 } from '~/utils/localStorage';
 
 interface FavButtonProps {
-  item: FavoriteItem;
+  item: StorageItem;
 }
 
 const FavoriteButton = ({ item }: FavButtonProps) => {

@@ -23,7 +23,7 @@ import Card, { CardContent, CardHeader } from '~/components/ui/Card';
 import {
   getRecentSearches,
   getFavorites,
-  FavoriteItem,
+  StorageItem,
 } from '~/utils/localStorage';
 import PosterCard from '~/components/ui/PosterCard';
 
@@ -119,7 +119,7 @@ const SearchPage = () => {
 
   const [recentSearches, setRecentSearches] = useState<SearchResult[]>([]);
 
-  const [favs, setFavs] = useState<FavoriteItem[]>([]);
+  const [favs, setFavs] = useState<StorageItem[]>([]);
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -270,7 +270,7 @@ const SearchPage = () => {
 
               <div className='pt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-10 max-w-7xl mx-auto'>
                 {trendingMovies.length > 0 ? (
-                  trendingMovies.map((i) => {
+                  trendingMovies.map((i: StorageItem) => {
                     return <PosterCard variant='default' key={i.id} item={i} />;
                   })
                 ) : (

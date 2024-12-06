@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import PosterCard from '~/components/ui/PosterCard';
-import { getFavorites, FavoriteItem } from '~/utils/localStorage';
+import { getFavorites, StorageItem } from '~/utils/localStorage';
 
 const FavoritesPage = () => {
-  const [favs, setFavs] = useState<FavoriteItem[]>([]);
+  const [favs, setFavs] = useState<StorageItem[]>([]);
 
   useEffect(() => {
     const storedFavorites = getFavorites();

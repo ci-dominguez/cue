@@ -1,10 +1,10 @@
 import { Link } from '@remix-run/react';
 import FavoriteButton from '../FavoriteButton';
-import { FavoriteItem } from '~/utils/localStorage';
+import { StorageItem } from '~/utils/localStorage';
 import { Star } from 'lucide-react';
 
 interface PosterCardProps {
-  item: FavoriteItem;
+  item: StorageItem;
   isLoading?: boolean;
   error?: string | null;
   variant: 'default' | 'alt';

@@ -1,6 +1,6 @@
 import { SearchResult } from './tmdb';
 
-export interface FavoriteItem {
+export interface StorageItem {
   id: number;
   title: string;
   name?: string;
@@ -10,8 +10,21 @@ export interface FavoriteItem {
   vote_average?: number;
 }
 
+const RECENTLY_VIEWED_KEY = 'recentlyViewed';
 const RECENT_SEARCHES_KEY = 'recents';
 const FAVORITES_KEY = 'favorites';
+
+//Recently viewed
+export const getRecentlyViewed = () => {
+  const storedRecents = localStorage.getItem(RECENTLY_VIEWED_KEY);
+  return storedRecents ? JSON.parse(storedRecents) : [];
+};
+
+export const saveRecentlyViewed = (viewedItem: StorageItem) => {
+  localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(viewedItem));
+};
+
+export const addRecentlyViewed = () => {};
 
 //Recent searches
 
@@ -45,16 +58,16 @@ export const addRecentSearch = (newSearch: SearchResult) => {
 
 //Favorites
 
-export const getFavorites = (): FavoriteItem[] => {
+export const getFavorites = (): StorageItem[] => {
   const storedFavorites = localStorage.getItem(FAVORITES_KEY);
   return storedFavorites ? JSON.parse(storedFavorites) : [];
 };
 
-export const saveFavorites = (favorites: FavoriteItem[]) => {
+export const saveFavorites = (favorites: StorageItem[]) => {
   localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
 };
 
-export const addFavorite = (item: FavoriteItem) => {
+export const addFavorite = (item: StorageItem) => {
   const favorites = getFavorites();
   if (
     !favorites.some(
@@ -65,7 +78,7 @@ export const addFavorite = (item: FavoriteItem) => {
   }
 };
 
-export const removeFavorite = (item: FavoriteItem) => {
+export const removeFavorite = (item: StorageItem) => {
   const favorites = getFavorites();
   const updatedFavorites = favorites.filter(
     (fav) => !(fav.id === item.id && fav.media_type === item.media_type)
@@ -73,7 +86,7 @@ export const removeFavorite = (item: FavoriteItem) => {
   saveFavorites(updatedFavorites);
 };
 
-export const isFavorite = (item: FavoriteItem): boolean => {
+export const isFavorite = (item: StorageItem): boolean => {
   const favorites = getFavorites();
 
   return favorites.some(
