@@ -15,7 +15,7 @@ interface ContentProps {
 }
 
 export const CardContent = ({ children }: ContentProps) => {
-  return <div className='flex flex-col space-y-3 mt-4'>{children}</div>;
+  return <div className='flex flex-col h-full mt-4 gap-3'>{children}</div>;
 };
 
 interface CardProps {
@@ -24,7 +24,7 @@ interface CardProps {
 
 const Card = ({ children }: CardProps) => {
   return (
-    <div className='rounded-lg text-text-1 bg-content-1 border border-content-2 p-4 md:p-6 space-y-3'>
+    <div className='rounded-lg text-text-1 bg-content-1 border border-content-2 p-4 md:p-6 space-y-3 flex flex-col'>
       {children}
     </div>
   );
