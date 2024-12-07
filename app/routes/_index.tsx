@@ -36,7 +36,7 @@ export default function Index() {
         <div className='w-full max-w-screen-xl mx-auto px-8 sm:px-10 md:px-12 lg:px-16'>
           <h1 className='pb-4 font-lora font-semibold tracking-tight text-4xl md:text-5xl lg:text-6xl max-w-[18ch]'>
             Find What to Watch Next,{' '}
-            <span className='bg-accent'>Effortlessly</span>
+            <span className='bg-accent leading-tight'>Effortlessly</span>
           </h1>
           <p className='tracking-micro lg:text-xl w-full max-w-lg lg:w-1/2 lg:max-w-xl'>
             Discover hidden gems and trending shows tailored to your tastes.
