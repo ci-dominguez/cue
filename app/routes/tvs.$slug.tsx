@@ -1,6 +1,6 @@
 import { LoaderFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getRecommendations, getShowDetails } from '~/utils/tmdb';
 import ShowDetails from '~/components/ShowDetails';
 import Recommendations from '~/components/Recommendations';
@@ -20,6 +20,11 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export default function ShowRoute() {
   const { show, recs } = useLoaderData<typeof loader>();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (recs) setIsLoading(false);
+  }, [recs]);
 
   useEffect(() => {
     addRecentlyViewed(show);
@@ -41,8 +46,8 @@ export default function ShowRoute() {
             </h2>
             <Recommendations
               recommendations={recs}
-              isLoading={false}
-              error={null}
+              isLoading={isLoading}
+              variant='default'
             />
           </div>
         </div>

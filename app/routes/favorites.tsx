@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import PosterCard from '~/components/ui/PosterCard';
+import Recommendations from '~/components/Recommendations';
 import { getFavorites, StorageItem } from '~/utils/localStorage';
 
 const FavoritesPage = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [favs, setFavs] = useState<StorageItem[]>([]);
 
   useEffect(() => {
     const storedFavorites = getFavorites();
     setFavs(storedFavorites);
+    setIsLoading(false);
   }, []);
   return (
     <>
@@ -17,15 +19,11 @@ const FavoritesPage = () => {
             Your Favorites
           </h1>
 
-          <div className='pt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-10 max-w-7xl mx-auto'>
-            {favs.length > 0 ? (
-              favs.map((i) => {
-                return <PosterCard variant='alt' key={i.id} item={i} />;
-              })
-            ) : (
-              <>No favorites</>
-            )}
-          </div>
+          <Recommendations
+            recommendations={favs}
+            isLoading={isLoading}
+            variant='alt'
+          />
         </div>
       </section>
     </>

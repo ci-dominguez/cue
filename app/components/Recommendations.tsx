@@ -1,23 +1,31 @@
 import { SearchResult } from '~/utils/tmdb';
 import PosterCard from './ui/PosterCard';
+import { StorageItem } from '~/utils/localStorage';
 
 interface RecommendationsProps {
-  recommendations: SearchResult[];
+  recommendations: SearchResult[] | StorageItem[];
   isLoading: boolean;
-  error: string | null;
+  variant: 'default' | 'alt';
 }
 
 const Recommendations = ({
   recommendations,
   isLoading,
-  error,
+  variant,
 }: RecommendationsProps) => {
   if (isLoading) {
-    return <div className='text-center py-4'>Loading recommendations...</div>;
-  }
-
-  if (error) {
-    return <div className='text-center py-4 text-red-500'>{error}</div>;
+    return (
+      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-10 max-w-7xl mx-auto'>
+        {Array.from({ length: 10 }).map((_, index) => (
+          <PosterCard
+            variant={variant}
+            isLoading={isLoading}
+            key={index}
+            item={recommendations[index]}
+          />
+        ))}
+      </div>
+    );
   }
 
   if (recommendations.length === 0) {
@@ -35,7 +43,8 @@ const Recommendations = ({
             release_date: i.release_date ?? 'Not Released',
             poster_path: i.poster_path ?? '',
           }}
-          variant={'default'}
+          variant={variant}
+          isLoading={isLoading}
         />
       ))}
     </div>

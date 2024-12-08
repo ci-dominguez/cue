@@ -25,7 +25,6 @@ import {
   StorageItem,
   getRecentlyViewed,
 } from '~/utils/localStorage';
-import PosterCard from '~/components/ui/PosterCard';
 
 export const meta: MetaFunction = () => {
   return [
@@ -109,9 +108,9 @@ const SearchPage = () => {
   const {
     recommendations,
     selectedItem: initialSelectedItem,
-    error,
     trendingMovies,
   } = useLoaderData<typeof loader>();
+  const [isTrendingLoading, setIsTrendingLoading] = useState(true);
 
   const [selectedItem, setSelectedItem] = useState<SearchResult | null>(
     initialSelectedItem
@@ -123,6 +122,10 @@ const SearchPage = () => {
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (trendingMovies) setIsTrendingLoading(false);
+  }, [trendingMovies]);
 
   useEffect(() => {
     if (!searchParams.get('recsFor') && !searchParams.get('media')) {
@@ -276,7 +279,7 @@ const SearchPage = () => {
               <Recommendations
                 recommendations={recommendations}
                 isLoading={false}
-                error={error}
+                variant='default'
               />
             </div>
           </div>
@@ -294,19 +297,15 @@ const SearchPage = () => {
                   Above
                 </Link>
               </h2>
-              <p className='tracking-micro lg:text-xl w-full max-w-lg lg:w-1/2 lg:max-w-xl'>
+              <p className='tracking-micro lg:text-xl w-full max-w-lg lg:w-1/2 lg:max-w-xl pb-10'>
                 In the mean time, here is some trending content for you!
               </p>
 
-              <div className='pt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-10 max-w-7xl mx-auto'>
-                {trendingMovies.length > 0 ? (
-                  trendingMovies.map((i: StorageItem) => {
-                    return <PosterCard variant='default' key={i.id} item={i} />;
-                  })
-                ) : (
-                  <>No Results</>
-                )}
-              </div>
+              <Recommendations
+                recommendations={trendingMovies}
+                isLoading={isTrendingLoading}
+                variant='default'
+              />
             </div>
           </div>
         </section>

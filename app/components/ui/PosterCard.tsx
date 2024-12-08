@@ -2,15 +2,47 @@ import { Link } from '@remix-run/react';
 import FavoriteButton from '../FavoriteButton';
 import { StorageItem } from '~/utils/localStorage';
 import { Star } from 'lucide-react';
+import { SearchResult } from '~/utils/tmdb';
 
 interface PosterCardProps {
-  item: StorageItem;
+  item: StorageItem | SearchResult;
   isLoading?: boolean;
   error?: string | null;
   variant: 'default' | 'alt';
 }
 
-const PosterCard = ({ item, variant }: PosterCardProps) => {
+const PosterCard = ({ item, variant, isLoading }: PosterCardProps) => {
+  if (isLoading) {
+    return (
+      <div className='overflow-hidden flex flex-col animate-pulse'>
+        <div
+          className={`aspect-w-2 aspect-h-3 rounded ${
+            variant === 'alt' ? 'bg-content-2' : 'bg-stone-700'
+          }`}
+        />
+        <div className='flex flex-col flex-grow pt-2'>
+          <div
+            className={`h-6 rounded mb-2 ${
+              variant === 'alt' ? 'bg-content-2' : 'bg-stone-700'
+            }`}
+          />
+          <div className='flex justify-between mt-auto'>
+            <div
+              className={`h-4 rounded w-16 ${
+                variant === 'alt' ? 'bg-content-2' : 'bg-stone-700'
+              }`}
+            />
+            <div
+              className={`h-4 rounded w-8 ${
+                variant === 'alt' ? 'bg-content-2' : 'bg-stone-700'
+              }`}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div key={item.id} className='overflow-hidden flex flex-col'>
       {item.poster_path && (

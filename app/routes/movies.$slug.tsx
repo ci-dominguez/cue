@@ -1,6 +1,6 @@
 import { LoaderFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getMovieDetails, getRecommendations } from '~/utils/tmdb';
 import MovieDetails from '~/components/MovieDetails';
 import Recommendations from '~/components/Recommendations';
@@ -19,6 +19,11 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export default function MovieRoute() {
   const { movie, recs } = useLoaderData<typeof loader>();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (recs) setIsLoading(false);
+  }, [recs]);
 
   useEffect(() => {
     addRecentlyViewed(movie);
@@ -38,11 +43,7 @@ export default function MovieRoute() {
             >
               Movies You Might Like
             </h2>
-            <Recommendations
-              recommendations={recs}
-              isLoading={false}
-              error={null}
-            />
+            <Recommendations recommendations={recs} isLoading={isLoading} />
           </div>
         </div>
       </section>

@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import PosterCard from '~/components/ui/PosterCard';
+import Recommendations from '~/components/Recommendations';
 import { getRecentlyViewed, StorageItem } from '~/utils/localStorage';
 
 const RecentsPage = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [recentlyViewed, setRecentlyViewed] = useState<StorageItem[]>([]);
 
   useEffect(() => {
     const storedRecents = getRecentlyViewed();
     setRecentlyViewed(storedRecents);
+    setIsLoading(false);
   }, []);
   return (
     <>
@@ -17,26 +19,11 @@ const RecentsPage = () => {
             Recently Viewed
           </h1>
 
-          <div className='pt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-10 max-w-7xl mx-auto'>
-            {recentlyViewed.length > 0 ? (
-              recentlyViewed.map((i) => {
-                return (
-                  <PosterCard
-                    variant='alt'
-                    key={i.id}
-                    item={{
-                      ...i,
-                      title: i.title ?? 'Untitled',
-                      release_date: i.release_date ?? 'Not Released',
-                      poster_path: i.poster_path ?? '',
-                    }}
-                  />
-                );
-              })
-            ) : (
-              <>No activity saved.</>
-            )}
-          </div>
+          <Recommendations
+            recommendations={recentlyViewed}
+            isLoading={isLoading}
+            variant='alt'
+          />
         </div>
       </section>
     </>
