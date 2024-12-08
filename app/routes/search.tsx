@@ -221,10 +221,10 @@ const SearchPage = () => {
                     Array.from({ length: 4 }).map((_, index) => (
                       <li
                         key={index}
-                        className='flex items-center space-x-1.5 animate-pulse w-full'
+                        className='flex items-center space-x-1.5 animate-pulse w-full '
                       >
                         <div className='w-5 h-5 bg-content-2 rounded-full' />
-                        <div className='h-4 bg-content-2 rounded-md ' />
+                        <div className='h-4 bg-content-2 rounded-md w-32' />
                       </li>
                     ))
                   ) : (
