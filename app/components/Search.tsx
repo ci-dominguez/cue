@@ -9,6 +9,7 @@ import useDebounce from '../hooks/useDebounce';
 import Fuse from 'fuse.js';
 import { SearchResult } from '~/utils/tmdb';
 import Input from '~/components/ui/Input';
+import { FileVideo } from 'lucide-react';
 
 interface SearchProps {
   onItemSelect: (item: SearchResult) => void;
@@ -54,15 +55,27 @@ const Search = ({ onItemSelect }: SearchProps) => {
             {fuzzyResults.map((result) => (
               <button
                 key={result.id}
-                className='px-4 py-2 cursor-pointer w-full text-left rounded-md border-[1px] border-text border-opacity-10 bg-content'
+                className='px-4 py-2 cursor-pointer w-full text-left rounded-md border-[1px] border-text border-opacity-10 bg-content flex items-center gap-2'
                 onClick={() => {
                   onItemSelect(result);
                   setQuery('');
                 }}
               >
-                {result.title}{' '}
-                {result.release_date &&
-                  `(${new Date(result.release_date).getFullYear()})`}
+                {result.poster_path ? (
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500${result.poster_path}`}
+                    alt={result.title}
+                    className='h-14 object-cover rounded'
+                  />
+                ) : (
+                  <FileVideo className='h-14 w-10 stroke-black' />
+                )}
+
+                <span>
+                  {result.title}{' '}
+                  {result.release_date &&
+                    `(${new Date(result.release_date).getFullYear()})`}
+                </span>
               </button>
             ))}
           </div>
