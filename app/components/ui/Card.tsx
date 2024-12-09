@@ -15,11 +15,7 @@ interface ContentProps {
 }
 
 export const CardContent = ({ children }: ContentProps) => {
-  return (
-    <div className='flex flex-col h-full min-h-48 min-w-56 mt-4 gap-3'>
-      {children}
-    </div>
-  );
+  return <div className='flex flex-col h-full mt-4 gap-3'>{children}</div>;
 };
 
 interface CardProps {

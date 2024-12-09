@@ -167,98 +167,102 @@ const SearchPage = () => {
             <Card>
               <CardHeader>Recently Viewed</CardHeader>
               <CardContent>
-                <ul className='flex-1 flex flex-col gap-2'>
-                  {isLocalStorageLoading ? (
-                    Array.from({ length: 4 }).map((_, index) => (
-                      <li
-                        key={index}
-                        className='flex items-center space-x-1.5 animate-pulse w-full'
-                      >
-                        <div className='w-5 h-5 bg-content-2 rounded-full' />
-                        <div className='h-4 bg-content-2 rounded-md w-32' />
-                      </li>
-                    ))
-                  ) : (
-                    <>
-                      {recentlyViewed.length > 0 ? (
-                        recentlyViewed.slice(0, 4).map((i) => {
-                          return (
-                            <li key={i.id}>
-                              <Link
-                                to={`/${i.media_type}s/${i.id}`}
-                                className='flex items-center space-x-1.5 text-text-1 underline hover:text-black'
-                              >
-                                <Clock className='size-5' />{' '}
-                                <span>{i.name || i.title}</span>
-                              </Link>
-                            </li>
-                          );
-                        })
-                      ) : (
-                        <li>
-                          <span className='flex items-center space-x-1.5 text-text'>
-                            <Clock className='size-5' />{' '}
-                            <span>No searches saved.</span>
-                          </span>
+                <div className='flex flex-col gap-3 min-h-48 min-w-56'>
+                  <ul className='flex-1 flex flex-col gap-2'>
+                    {isLocalStorageLoading ? (
+                      Array.from({ length: 4 }).map((_, index) => (
+                        <li
+                          key={index}
+                          className='flex items-center space-x-1.5 animate-pulse w-full'
+                        >
+                          <div className='w-5 h-5 bg-content-2 rounded-full' />
+                          <div className='h-4 bg-content-2 rounded-md w-32' />
                         </li>
-                      )}
-                    </>
-                  )}
-                </ul>
-                <Button variant='default' className='w-full mt-auto'>
-                  <Link to='/recently-viewed' className='w-full py-2.5 px-6'>
-                    View All
-                  </Link>
-                </Button>
+                      ))
+                    ) : (
+                      <>
+                        {recentlyViewed.length > 0 ? (
+                          recentlyViewed.slice(0, 4).map((i) => {
+                            return (
+                              <li key={i.id}>
+                                <Link
+                                  to={`/${i.media_type}s/${i.id}`}
+                                  className='flex items-center space-x-1.5 text-text-1 underline hover:text-black'
+                                >
+                                  <Clock className='size-5' />{' '}
+                                  <span>{i.name || i.title}</span>
+                                </Link>
+                              </li>
+                            );
+                          })
+                        ) : (
+                          <li>
+                            <span className='flex items-center space-x-1.5 text-text'>
+                              <Clock className='size-5' />{' '}
+                              <span>No searches saved.</span>
+                            </span>
+                          </li>
+                        )}
+                      </>
+                    )}
+                  </ul>
+                  <Button variant='default' className='w-full mt-auto'>
+                    <Link to='/recently-viewed' className='w-full py-2.5 px-6'>
+                      View All
+                    </Link>
+                  </Button>
+                </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>Your Favorites</CardHeader>
               <CardContent>
-                <ul className='flex-1 flex flex-col gap-2'>
-                  {isLocalStorageLoading ? (
-                    Array.from({ length: 4 }).map((_, index) => (
-                      <li
-                        key={index}
-                        className='flex items-center space-x-1.5 animate-pulse w-full '
-                      >
-                        <div className='w-5 h-5 bg-content-2 rounded-full' />
-                        <div className='h-4 bg-content-2 rounded-md w-32' />
-                      </li>
-                    ))
-                  ) : (
-                    <>
-                      {favs.length > 0 ? (
-                        favs.slice(0, 4).map((i) => {
-                          return (
-                            <li key={i.id}>
-                              <Link
-                                to={`/${i.media_type}s/${i.id}`}
-                                className='flex items-center space-x-1.5 text-text-1 underline hover:text-black'
-                              >
-                                <Heart className='size-5 fill-red-600 stroke-red-600' />{' '}
-                                <span>{i.title || i.name}</span>
-                              </Link>
-                            </li>
-                          );
-                        })
-                      ) : (
-                        <li>
-                          <span className='flex items-center space-x-1.5 text-text'>
-                            <Heart className='size-5' />{' '}
-                            <span>No favorites yet.</span>
-                          </span>
+                <div className='flex flex-col gap-3 min-h-48 min-w-56'>
+                  <ul className='flex-1 flex flex-col gap-2'>
+                    {isLocalStorageLoading ? (
+                      Array.from({ length: 4 }).map((_, index) => (
+                        <li
+                          key={index}
+                          className='flex items-center space-x-1.5 animate-pulse w-full '
+                        >
+                          <div className='w-5 h-5 bg-content-2 rounded-full' />
+                          <div className='h-4 bg-content-2 rounded-md w-32' />
                         </li>
-                      )}
-                    </>
-                  )}
-                </ul>
-                <Button variant='default' className='w-full mt-auto'>
-                  <Link to='/favorites' className='w-full py-2.5 px-6'>
-                    View All
-                  </Link>
-                </Button>
+                      ))
+                    ) : (
+                      <>
+                        {favs.length > 0 ? (
+                          favs.slice(0, 4).map((i) => {
+                            return (
+                              <li key={i.id}>
+                                <Link
+                                  to={`/${i.media_type}s/${i.id}`}
+                                  className='flex items-center space-x-1.5 text-text-1 underline hover:text-black'
+                                >
+                                  <Heart className='size-5 fill-red-600 stroke-red-600' />{' '}
+                                  <span>{i.title || i.name}</span>
+                                </Link>
+                              </li>
+                            );
+                          })
+                        ) : (
+                          <li>
+                            <span className='flex items-center space-x-1.5 text-text'>
+                              <Heart className='size-5' />{' '}
+                              <span>No favorites yet.</span>
+                            </span>
+                          </li>
+                        )}
+                      </>
+                    )}
+                  </ul>
+                  <Button variant='default' className='w-full mt-auto'>
+                    <Link to='/favorites' className='w-full py-2.5 px-6'>
+                      View All
+                    </Link>
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </div>
