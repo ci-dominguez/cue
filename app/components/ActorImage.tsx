@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getActorImageUrl } from '~/utils/tmdb';
-import Pfp from '../../imgs/profile.svg';
+import { CircleUserRound } from 'lucide-react';
 
 const ActorImage = ({
   profilePath,
@@ -9,20 +9,14 @@ const ActorImage = ({
   profilePath: string | null;
   name: string;
 }) => {
-  const [imageUrl, setImageUrl] = useState<string>(Pfp);
+  const [imageUrl, setImageUrl] = useState<string>();
 
   useEffect(() => {
     getActorImageUrl(profilePath).then(setImageUrl);
   }, [profilePath]);
 
-  if (!profilePath)
-    return (
-      <img
-        src={Pfp}
-        alt={name}
-        className='w-10 h-10 rounded-full object-cover'
-      />
-    );
+  if (!profilePath || !imageUrl)
+    return <CircleUserRound className='size-12 stroke-text' />;
 
   return (
     <img
