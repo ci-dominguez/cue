@@ -1,6 +1,19 @@
+import type { MetaFunction } from '@remix-run/node';
 import { useState, useEffect } from 'react';
 import Recommendations from '~/components/Recommendations';
 import { getFavorites, StorageItem } from '~/utils/localStorage';
+
+export const meta: MetaFunction = () => {
+  return [
+    {
+      title: 'Favorites - Your Saved Movies & Shows',
+    },
+    {
+      description:
+        'View your favorite movies and TV shows saved for later on Cue.',
+    },
+  ];
+};
 
 const FavoritesPage = () => {
   const [isLoading, setIsLoading] = useState(true);

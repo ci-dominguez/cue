@@ -1,3 +1,4 @@
+import type { MetaFunction } from '@remix-run/node';
 import { LoaderFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { useEffect, useState } from 'react';
@@ -17,6 +18,14 @@ export const loader: LoaderFunction = async ({ params }) => {
   return { movie, recs };
 };
 
+export const meta: MetaFunction = () => {
+  return [
+    {
+      description: `Discover more hidden gems by using Cue. Learn about the cast, plot, and more through our platform.`,
+    },
+  ];
+};
+
 export default function MovieRoute() {
   const { movie, recs } = useLoaderData<typeof loader>();
   const [isLoading, setIsLoading] = useState(true);
@@ -26,6 +35,7 @@ export default function MovieRoute() {
   }, [recs]);
 
   useEffect(() => {
+    document.title = `${movie.title} - Move Details | Cue`;
     addRecentlyViewed(movie);
   });
 
@@ -43,7 +53,11 @@ export default function MovieRoute() {
             >
               Movies You Might Like
             </h2>
-            <Recommendations recommendations={recs} isLoading={isLoading} />
+            <Recommendations
+              recommendations={recs}
+              isLoading={isLoading}
+              variant='default'
+            />
           </div>
         </div>
       </section>

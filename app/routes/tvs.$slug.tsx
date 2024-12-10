@@ -1,3 +1,4 @@
+import type { MetaFunction } from '@remix-run/node';
 import { LoaderFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { useEffect, useState } from 'react';
@@ -18,6 +19,14 @@ export const loader: LoaderFunction = async ({ params }) => {
   return { show, recs };
 };
 
+export const meta: MetaFunction = () => {
+  return [
+    {
+      description: `Discover more hidden gems by using Cue. Learn about the cast, plot, and more through our platform.`,
+    },
+  ];
+};
+
 export default function ShowRoute() {
   const { show, recs } = useLoaderData<typeof loader>();
   const [isLoading, setIsLoading] = useState(true);
@@ -27,6 +36,7 @@ export default function ShowRoute() {
   }, [recs]);
 
   useEffect(() => {
+    document.title = `${show.name} - TV Show Details | Cue`;
     addRecentlyViewed(show);
   });
 

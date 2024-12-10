@@ -1,6 +1,19 @@
+import type { MetaFunction } from '@remix-run/node';
 import { useState, useEffect } from 'react';
 import Recommendations from '~/components/Recommendations';
 import { getRecentlyViewed, StorageItem } from '~/utils/localStorage';
+
+export const meta: MetaFunction = () => {
+  return [
+    {
+      title: 'Recently Viewed - Your Saved Movies & Shows',
+    },
+    {
+      description:
+        'Check back into your recently viewed movies and shows on Cue.',
+    },
+  ];
+};
 
 const RecentsPage = () => {
   const [isLoading, setIsLoading] = useState(true);

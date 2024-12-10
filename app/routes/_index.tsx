@@ -22,7 +22,8 @@ export const meta: MetaFunction = () => {
     { title: 'Cue - Movie and TV Show Recommendations' },
     {
       name: 'description',
-      content: 'Get personalized movie and TV show recommendations',
+      content:
+        'Find your next big binge with personalized movie and TV show recommendations on Cue. Our platform helps find hidden gems just for you.',
     },
   ];
 };
